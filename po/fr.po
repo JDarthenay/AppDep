@@ -1,0 +1,102 @@
+# French translations for AppDep package.
+# Copyright (C) 2016 THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the AppDep package.
+# <julien.darthenay@free.fr>, 2016.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: AppDep 2.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2016-04-15 19:03+0200\n"
+"PO-Revision-Date: 2016-04-14 16:21+0200\n"
+"Last-Translator: <julien.darthenay@free.fr>\n"
+"Language-Team: French\n"
+"Language: fr\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=CP1252\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+
+#: src/AppDep.c:462
+#, c-format
+msgid "Incorrects arguments, see: %s --help\n"
+msgstr "Arguments incorrects, voir: %s --help\n"
+
+#: src/AppDep.c:469
+#, c-format
+msgid ""
+"Append standard input at the end of a file.\n"
+"Designed to add dependencies at the end of a makefile.\n"
+"\n"
+"Usage:\n"
+"%s [-n] [-l LINE_TEXT] [-d LIBINT_DLL] TARGET\n"
+"%s -h [-d LIBINT_DLL]\n"
+"%s -v [-d LIBINT_DLL]\n"
+"\n"
+"  -V,  --version                 display the version of %s and exit.\n"
+"  -h,  --help                    print this help.\n"
+"  -n,  --null                    append nothing instead of standard input.\n"
+"  -l,  --dem-line LINE_TEXT      LINE_TEXT will be used\n"
+"                                 as a demarcation line.\n"
+"  -d,  --libintl-dll LIBINT_DLL  try to use LIBINT_DLL\n"
+"                                 as a libint.dll dynamic library.\n"
+"\n"
+"Default demarcation line is:\n"
+"%ls\n"
+"If no LIBINT_DLL is given or loading LIBINT_DLL failed environment "
+"variable,\n"
+"%%%ls%% will be used.\n"
+"If this also fails, %ls will be searched in Path.\n"
+msgstr ""
+"Concatène l'entrée standard à la fin d'un fichier.\n"
+"Conçu pour ajouter des dépendances à la fin d'un makefile.\n"
+"\n"
+"Utilisation :\n"
+"%s [-n] [-l LINE_TEXT] [-d LIBINT_DLL] TARGET\n"
+"%s -h [-d LIBINT_DLL]\n"
+"%s -v [-d LIBINT_DLL]\n"
+"\n"
+"  -V,  --version                 affiche la version de %s et s'achève.\n"
+"  -h,  --help                    Affiche ce message d'aide.\n"
+"  -n,  --null                    concatène rien au lieu de l'entrée "
+"standard.\n"
+"  -l,  --dem-line LINE_TEXT      LINE_TEXT sera utilisée\n"
+"                                 comme ligne de démarcation.\n"
+"  -d,  --libintl-dll LIBINT_DLL  essaie d'utiliser LIBINT_DLL\n"
+"                                 comme bibliothèque dynamique libint.dll.\n"
+"\n"
+"La ligne de démarcation pas défaut est :\n"
+"%ls\n"
+"Si LIBINT_DLL n'est pas spécifié ou si son chargement a échoué\n"
+"la variable d'environnement %%%ls%% sera utilisée.\n"
+"Si cela échoue aussi, %ls sera recherché dans le Path.\n"
+
+#: src/AppDep.c:497
+#, c-format
+msgid "%s version %d.%d.%d.%d\n"
+msgstr "%s version %d.%d.%d.%d\n"
+
+#: src/AppDep.c:515
+#, c-format
+msgid "File %ls was not found or was not reachable.\n"
+msgstr "Le fichier %ls est absent ou inaccessible.\n"
+
+#: src/AppDep.c:520
+#, c-format
+msgid "Read error in file %ls.\n"
+msgstr "Erreur de lecture du fichier %ls.\n"
+
+#: src/AppDep.c:524
+#, c-format
+msgid "Write error in file %ls.\n"
+msgstr "Erreur d'écriture dans le fichier %ls.\n"
+
+#: src/AppDep.c:528
+#, c-format
+msgid "Read error in standard input.\n"
+msgstr "Erreur de lecture de l'entrée standard.\n"
+
+#: src/AppDep.c:554
+#, c-format
+msgid "CommandLineToArgvW() failed.\n"
+msgstr "Échec de CommandLineToArgvW().\n"

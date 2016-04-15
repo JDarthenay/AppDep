@@ -1,0 +1,61 @@
+/*****************************************************************************
+ * AppDep.rc                            resource file for AppDep application *
+ * Author               Julien Darthenay julien<dot>darthenay<at>free<dot>fr *
+ * Developing tools              MinGW-w64, Notepad++, MS Windows Seven Home *
+ * Copyright 2010-2016 Julien Darthenay                                      *
+ *****************************************************************************/
+
+/*****************************************************************************
+ * This file is part of AppDep                                               *
+ *                                                                           *
+ * AppDep is free software: you can redistribute it and/or modify it         *
+ * under the terms of the GNU General Public License as published by         *
+ * the Free Software Foundation, either version 3 of the License, or (at     *
+ * your option) any later version.                                           *
+ *                                                                           *
+ * AppDep is distributed in the hope that it will be useful, but WITHOUT     *
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or     *
+ * FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public              *
+ * License for more details.                                                 *
+ *                                                                           *
+ * You should have received a copy of the GNU General Public License         *
+ * along with AppDep. If not, see <http://www.gnu.org/licenses/>.            *
+ *****************************************************************************/
+
+#include "resource.h"
+#include "version.h"
+
+// Windows XP style
+CREATEPROCESS_MANIFEST_RESOURCE_ID RT_MANIFEST "xpmanifest.xml"
+
+// Appliccation icon
+ID_APP_ICON ICON MOVEABLE PURE LOADONCALL DISCARDABLE "..\\res\\AppDep.ico"
+
+// Version
+VS_VERSION_INFO VERSIONINFO
+  FILEVERSION APPDEP_VERSION_NUMBER
+  PRODUCTVERSION APPDEP_VERSION_NUMBER
+BEGIN
+    BLOCK "StringFileInfo"
+    BEGIN
+        BLOCK "000004b0"
+        BEGIN
+            VALUE "Comments", ""
+            VALUE "CompanyName", "Julien Darthenay"
+            VALUE "FileDescription", "Dependencies concatenation tool"
+            VALUE "FileVersion", APPDEP_VERSION_LONG
+            VALUE "InternalName", APPDEP_APPLICATION
+            VALUE "LegalCopyright", "Copyright (C) 2010-2016 - GPL license version 3"
+            VALUE "LegalTrademarks", ""
+            VALUE "OriginalFilename", "AppDep.exe"
+            VALUE "PrivateBuild", ""
+            VALUE "ProductName", APPDEP_APPLICATION
+            VALUE "ProductVersion", APPDEP_VERSION_LONG
+            VALUE "SpecialBuild", ""
+        END
+    END
+    BLOCK "VarFileInfo"
+    BEGIN
+        VALUE "Translation", 0x0000, 1200
+    END
+END

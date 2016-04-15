@@ -1,0 +1,80 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2016-04-15 19:03+0200\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=CHARSET\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: src/AppDep.c:462
+#, c-format
+msgid "Incorrects arguments, see: %s --help\n"
+msgstr ""
+
+#: src/AppDep.c:469
+#, c-format
+msgid ""
+"Append standard input at the end of a file.\n"
+"Designed to add dependencies at the end of a makefile.\n"
+"\n"
+"Usage:\n"
+"%s [-n] [-l LINE_TEXT] [-d LIBINT_DLL] TARGET\n"
+"%s -h [-d LIBINT_DLL]\n"
+"%s -v [-d LIBINT_DLL]\n"
+"\n"
+"  -V,  --version                 display the version of %s and exit.\n"
+"  -h,  --help                    print this help.\n"
+"  -n,  --null                    append nothing instead of standard input.\n"
+"  -l,  --dem-line LINE_TEXT      LINE_TEXT will be used\n"
+"                                 as a demarcation line.\n"
+"  -d,  --libintl-dll LIBINT_DLL  try to use LIBINT_DLL\n"
+"                                 as a libint.dll dynamic library.\n"
+"\n"
+"Default demarcation line is:\n"
+"%ls\n"
+"If no LIBINT_DLL is given or loading LIBINT_DLL failed environment "
+"variable,\n"
+"%%%ls%% will be used.\n"
+"If this also fails, %ls will be searched in Path.\n"
+msgstr ""
+
+#: src/AppDep.c:497
+#, c-format
+msgid "%s version %d.%d.%d.%d\n"
+msgstr ""
+
+#: src/AppDep.c:515
+#, c-format
+msgid "File %ls was not found or was not reachable.\n"
+msgstr ""
+
+#: src/AppDep.c:520
+#, c-format
+msgid "Read error in file %ls.\n"
+msgstr ""
+
+#: src/AppDep.c:524
+#, c-format
+msgid "Write error in file %ls.\n"
+msgstr ""
+
+#: src/AppDep.c:528
+#, c-format
+msgid "Read error in standard input.\n"
+msgstr ""
+
+#: src/AppDep.c:554
+#, c-format
+msgid "CommandLineToArgvW() failed.\n"
+msgstr ""

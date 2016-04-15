@@ -1,0 +1,195 @@
+===============================================================================
+=  lisezmoi.txt             description des fichiers de l'application AppDep  =
+=  Auteur               Julien Darthenay julien<dot>darthenay<at>free<dot>fr  =
+=  Outils de développement       MinGW-w64, Notepad++, MS Windows Seven Home  =
+=  Copyright 2010-2016 Julien Darthenay                                       =
+===============================================================================
+
+===============================================================================
+=  This file is part of AppDep                                                =
+=                                                                             =
+=  AppDep is free software: you can redistribute it and/or modify it          =
+=  under the terms of the GNU General Public License as published by          =
+=  the Free Software Foundation, either version 3 of the License, or (at      =
+=  your option) any later version.                                            =
+=                                                                             =
+=  AppDep is distributed in the hope that it will be useful, but WITHOUT      =
+=  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or      =
+=  FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public               =
+=  License for more details.                                                  =
+=                                                                             =
+=  You should have received a copy of the GNU General Public License          =
+=  along with AppDep. If not, see <http://www.gnu.org/licenses/>.             =
+===============================================================================
+
+L'archive contenant ce fichier peut être téléchargée sur
+<http://julien.darthenay.free.fr> ou
+<https://github.com/JDarthenay/AppDep>.
+
+AppDep - version 2.0
+
+AppDep.exe est un outil de concaténation des dépendances à la fin d'un fichier.
+Il recherche la ligne de démarcation (spécifiée ou par défaut) dans le fichier
+cible (supposé être un makefile). S'il la trouve, il efface toutes les données
+qui la suivent. S'il ne la trouve pas il la rajoute à la fin du fichier. Il
+écrit ensuite derrière les données transmises sur l'entrée standard (supposées
+être la liste des dépendances générées par gcc par exemple).
+
+Description des différents fichiers fournis.
+
+AppDep-src.7z - archive contenant toutes les sources pour compiler l'outil.
+Contient :
+  src/resource.h
+  src/xpmanifest.xml
+  src/AppDep.rc
+  src/AppDep.c
+  src/gettext.c
+  src/gettext.h
+  src/version.h
+  src/wgetopt.c
+  src/wgetopt.h
+  po/AppDep.pot
+  po/fr.po
+  po/fr.gmo
+  res/AppDep.ico
+  update-ver.bat
+  makefile
+  Doxyfile
+  COPYING.txt
+  lisezmoi.txt
+  readme.txt
+  makefile.txt
+  README.md
+
+AppDep-bin32.7z - archive ne contenant que l'outil 32-bits lui-même.
+Contient :
+  bin_x86/AppDep.exe
+  share/
+  COPYING.txt
+  lisezmoi.txt
+  readme.txt
+  makekile.txt
+
+AppDep-bin64.7z - archive ne contenant que l'outil 64-bits lui-même.
+Contient :
+  bin_x64/AppDep.exe
+  share/
+  COPYING.txt
+  lisezmoi.txt
+  readme.txt
+  makekile.txt
+
+AppDep-htmldoc.7z - archive contenant la documentation du code source.
+Contient :
+  htmldoc/
+  COPYING.txt
+  lisezmoi.txt
+  readme.txt
+  makefile.txt
+
+src/resource.h - fichier en-tête des ressources.
+
+src/version.h - fichier en-tête des versions de l'application.
+
+src/xpmanifest.xml - fichier manifest, modifie l'affichage du fichier
+AppDep.exe dans l'explorateur Windows.
+
+src/AppDep.rc - fichier ressources. Permet d'intégrer le fichier manifest et
+permet l'affichage d'informations sur le programme dans l'onglet Version des
+Propriétés du fichier AppDep.exe.
+
+src/AppDep.c - module principal de l'outil.
+
+src/gettext.h - fichier en-tête du module de chargement dynamique de
+libint.dll.
+
+src/gettext.c - module de chargement dynamique de libint.dll.
+
+src/wgetopt.h - fichier en-tête du module getopt pour wide strings.
+
+src/wgetopt.c - module getopt pour wide strings.
+
+res/AppDep.ico - fichier contenant les icônes de l'outil.
+
+po/AppDep.pot - portable object template pour les traductions.
+
+po/fr.po - portable object de la traduction en français.
+
+po/fr.gmo - machine object de la traduction en français.
+
+htmldoc/ - dossier contenant la documentation générée par Doxygen.
+
+bin_x86/AppDep.exe - l'outil lui-même, compilé en 32-bits avec MinGW-w64
+<http://mingw-w64.org/doku.php>. Copiez ce fichier dans le même dossier que le
+makefile qui veut l'utiliser, ou dans un dossier dans la liste de la variable
+d'environnement PATH.
+
+bin_x64/AppDep.exe - l'outil lui-même, compilé en 64-bits avec MinGW-w64
+<http://mingw-w64.org/doku.php>. Copiez ce fichier dans le même dossier que le
+makefile qui veut l'utiliser, ou dans un dossier dans la liste de la variable
+d'environnement PATH.
+
+share/ - dossier contenant les machine objects des traduction prêts à être
+déployés. Doit être placé dans le dossier parent de celui où AppDep.exe est
+installé.
+
+update-ver.bat - fichier batch qui va modifier les numéros de version dans les
+fichiers manifest, version et configuration de Doxygen. Requiert
+GNU sed <http://gnuwin32.sourceforge.net/packages/sed.htm> et GNU grep
+<http://gnuwin32.sourceforge.net/packages/grep.htm>. Modifiez si nécessaire la
+variable PATH pour que ce batch puisse trouver sed et grep.
+
+makefile - permet de compiler AppDep avec MinGW-w64. Modifiez ce makefile pour
+paramétrer les chemins avant de l'utiliser.
+
+Doxyfile - fichier de configuration pour Doxygen <http://www.doxygen.org/>.
+
+COPYING.txt - la licence GPL version 3. Elle s'applique à l'outil dans son
+ensemble. Certains fichiers source peuvent être sous licence MIT, vérifiez
+au début de chaque fichier.
+
+lisezmoi.txt - ce fichier.
+
+readme.txt - traduction de ce fichier en anglais.
+
+README.md - instructions pour compiler et traduire l'outil.
+
+makefile.txt - un exemple : le makefile de la version 2.0 de cet outil qui
+s'utilise lui-même.
+
+Historique des versions
+30 mai 2010 - version 1.0
+  Création.
+20 novembre 2010 - version 1.1
+  Correction du message d'aide.
+  Ajout d'une option pour obtenir le numéro de version.
+15 mai 2012 - version 1.2
+  Prise en compte de la version 1.3 de outputDOS : ajout d'une option pour
+remplacer la variable d'environnement OUTPUT_DOS.
+19 mai 2012 - version 1.3
+  La bibliothèque outputDOS sera dorénavant chargée dynamiquement, et donc
+AppDep pourra s'exécuter sans la trouver.
+21 juillet 2012 - version 1.4
+  Génération d'une version 32-bits et d'une version 64-bits.
+  majVer.bat ne modifie plus makefile.txt qui sera dorénavant le makefile de
+la version 1.2.
+  Modification de l'icône pour prendre en charge une résolution maximale de
+256x256 pixels.
+25 août 2013 - version 1.5
+  Ajout de l'option -n pour ne rien lire et concaténer un fichier vide.
+15 avril 2016 - version 2.0
+  Retrait de l'utilisation de outputDOS.
+  Réorganisation des sources et ressources dans des dossiers.
+  Traduction de l'application en anglais : nom des fichiers batch,
+documentation générée par Doxygen, messages affichés par l'application, ajout
+d'un fichier readme.txt.
+  Internationalisation avec GNU gettext.
+  Chargement dynamique de libintl.dll pour l'utilisation de GNU gettext.
+  Utilisation de wgetopt.
+  Troncature d'un fichier par appel système plutôt que par écrasement. Gain
+important en robustesse.
+  Les compilations 32-bits et 64-bits peuvent maintenant se faire en un seul
+appel à GNU make.
+  L'exemple makefile.txt sera dorénavant le makefile de la version 2.0.
+  Ajout d'une page principale dans la documentation générée par Doxygen.
+  Mise en ligne sur GitHub.
