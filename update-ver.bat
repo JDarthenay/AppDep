@@ -63,6 +63,8 @@ if errorlevel 1 goto SEDERR
 del Doxyfile
 move Doxyfile.tmp Doxyfile
 
+goto :EOF
+
 :GREPERR
 echo erreur while executing grep
 goto END

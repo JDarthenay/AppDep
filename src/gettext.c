@@ -77,31 +77,38 @@ const char *gettext(const char *text)
 }
 
 /**
- * \brief Handle to loaded library.
+ * \brief Handle to loaded libintl.dll.
  * \since 1.0
  */
-static HMODULE h_libint = NULL;
+static HMODULE h_libintl = NULL;
+
+/**
+ * \brief Handle to loaded libiconv.dll.
+ * \since 1.1
+ */
+static HMODULE h_iconv = NULL;
 
 // Dynamic linking with GNU gettext intializations.
-void init_gettext(const wchar_t *dllname)
+void init_gettext(const wchar_t *libiconvdllname,
+                  const wchar_t *libintldllname)
 {
   const char *(*p_bindtextdomain)(const char *, const char *);
   const char *(*p_textdomain)(const char *);
 
   // Tries to load a module with given name.
   // Also checks handlers to all necessary functions.
-  int load_libint(const wchar_t *module_name)
+  int load_libintl(const wchar_t *module_name)
   {
-    if ((h_libint = LoadLibraryW(module_name)) != NULL)
+    if ((h_libintl = LoadLibraryW(module_name)) != NULL)
     {
       p_gettext = (const char *(*)(const char *))
-                  GetProcAddress(h_libint, "gettext");
+                  GetProcAddress(h_libintl, "gettext");
 
       p_bindtextdomain = (const char *(*)(const char *, const char *))
-                         GetProcAddress(h_libint, "bindtextdomain");
+                         GetProcAddress(h_libintl, "bindtextdomain");
 
       p_textdomain = (const char *(*)(const char *))
-                     GetProcAddress(h_libint, "textdomain");
+                     GetProcAddress(h_libintl, "textdomain");
 
       if (   p_gettext != NULL && p_bindtextdomain != NULL
           && p_textdomain != NULL)
@@ -111,31 +118,54 @@ void init_gettext(const wchar_t *dllname)
       }
       else
       {
-        FreeLibrary(h_libint);
-        h_libint = NULL;
+        FreeLibrary(h_libintl);
+        h_libintl = NULL;
         p_gettext = &default_gettext;
       }
     }
 
-    return (h_libint != NULL);
+    return (h_libintl != NULL);
   }
 
-  // Tries to load a module as specified by VAR_LIBINT environement variable.
-  int load_var_libint()
+  // Tries to load a module as specified by VAR_LIBINT environment variable.
+  int load_var_libintl()
   {
-    const wchar_t *env_var_libint = _wgetenv(VAR_LIBINT);
+    const wchar_t *env_var_libintl = _wgetenv(VAR_LIBINT);
 
-    return (env_var_libint == NULL) ? 0 : load_libint(env_var_libint);
+    return (env_var_libintl == NULL) ? 0 : load_libintl(env_var_libintl);
+  }
+
+  // Tries to load libiconv.dll.
+  void load_iconvdll()
+  {
+    if (h_iconv == NULL && libiconvdllname != NULL)
+    {
+      h_iconv = LoadLibraryW(libiconvdllname);
+    }
+
+    if (h_iconv == NULL)
+    {
+      const wchar_t *env_var_iconv = _wgetenv(VAR_LIBICONV);
+
+      if (env_var_iconv != NULL)
+      {
+        h_iconv = LoadLibraryW(env_var_iconv);
+      }
+    }
   }
 
   // Even if no library is found locale is set.
   // It changes character set for output in DOS console.
   setlocale(LC_ALL, "");
 
-  if (dllname == NULL || !load_libint(dllname))
+  // Tries to load libiconv.dll.
+  load_iconvdll();
+
+  if ((libintldllname == NULL || !load_libintl(libintldllname))
+   && !load_var_libintl())
   {
     // No module found with default names: trying to call where
-    FILE *f_where = _wpopen(L"where " PATTERN_LIBINT, L"r");
+    FILE *f_where = _wpopen(L"where " PATTERN_LIBINT L" 2> NUL", L"r");
     if (f_where != NULL)
     {
       wchar_t buffer[WHERE_BUFFER_SIZE];
@@ -179,7 +209,7 @@ void init_gettext(const wchar_t *dllname)
           {
             // If buffer is a full line,
             // tries to load the library with this full path.
-            if (load_libint(buffer))
+            if (load_libintl(buffer))
             {
               cont = 0;
             }
@@ -195,10 +225,15 @@ void init_gettext(const wchar_t *dllname)
 // Freeing memory used by dynamic linking with GNU gettext.
 void close_gettext()
 {
-  if (h_libint != NULL)
+  if (h_libintl != NULL)
   {
-    FreeLibrary(h_libint);
-    h_libint = NULL;
+    FreeLibrary(h_libintl);
+    h_libintl = NULL;
     p_gettext = &default_gettext;
+  }
+
+  if (h_iconv != NULL)
+  {
+    FreeLibrary(h_iconv);
   }
 }

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-04-15 19:03+0200\n"
+"POT-Creation-Date: 2016-04-24 14:25+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,64 +17,74 @@ msgstr ""
 "Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: src/AppDep.c:462
+#: src/AppDep.c:561
 #, c-format
 msgid "Incorrects arguments, see: %s --help\n"
 msgstr ""
 
-#: src/AppDep.c:469
+#: src/AppDep.c:568
 #, c-format
 msgid ""
 "Append standard input at the end of a file.\n"
 "Designed to add dependencies at the end of a makefile.\n"
 "\n"
 "Usage:\n"
-"%s [-n] [-l LINE_TEXT] [-d LIBINT_DLL] TARGET\n"
-"%s -h [-d LIBINT_DLL]\n"
-"%s -v [-d LIBINT_DLL]\n"
+"%s [appending options] [DLL options] TARGET\n"
+"%s -h [DLL options]\n"
+"%s -v [DLL options]\n"
 "\n"
 "  -V,  --version                 display the version of %s and exit.\n"
 "  -h,  --help                    print this help.\n"
-"  -n,  --null                    append nothing instead of standard input.\n"
-"  -l,  --dem-line LINE_TEXT      LINE_TEXT will be used\n"
-"                                 as a demarcation line.\n"
-"  -d,  --libintl-dll LIBINT_DLL  try to use LIBINT_DLL\n"
-"                                 as a libint.dll dynamic library.\n"
+"\n"
+"Appending:\n"
+"  -n,  --null                append nothing instead of standard input.\n"
+"  -l,  --dem-line LINE_TEXT  LINE_TEXT will be used as a demarcation line.\n"
+"  -q,  --quiet               do not print any error message (implies -r).\n"
+"\n"
+"DLL:\n"
+"  -i,  --libiconv-dll LIBICONV_DLL  try to use LIBICONV_DLL\n"
+"                                    as a libiconv.dll dynamic library.\n"
+"  -d,  --libintl-dll LIBINT_DLL     try to use LIBINT_DLL\n"
+"                                    as a libintl.dll dynamic library.\n"
+"  -r,  --raw-output,  --no-dll      do not try to load any DLL.\n"
 "\n"
 "Default demarcation line is:\n"
 "%ls\n"
-"If no LIBINT_DLL is given or loading LIBINT_DLL failed environment "
-"variable,\n"
+"If no LIBICONV_DLL is given or loading LIBICONV_DLL failed,\n"
+"environment variable %%%ls%% will be used. If this also fails,\n"
+"libintl.dll will have to load libinconv.dll by itself.\n"
+"If no LIBINT_DLL is given or loading LIBINT_DLL failed, environment "
+"variable\n"
 "%%%ls%% will be used.\n"
 "If this also fails, %ls will be searched in Path.\n"
 msgstr ""
 
-#: src/AppDep.c:497
+#: src/AppDep.c:609
 #, c-format
 msgid "%s version %d.%d.%d.%d\n"
 msgstr ""
 
-#: src/AppDep.c:515
+#: src/AppDep.c:629
 #, c-format
 msgid "File %ls was not found or was not reachable.\n"
 msgstr ""
 
-#: src/AppDep.c:520
+#: src/AppDep.c:634
 #, c-format
 msgid "Read error in file %ls.\n"
 msgstr ""
 
-#: src/AppDep.c:524
+#: src/AppDep.c:638
 #, c-format
 msgid "Write error in file %ls.\n"
 msgstr ""
 
-#: src/AppDep.c:528
+#: src/AppDep.c:642
 #, c-format
 msgid "Read error in standard input.\n"
 msgstr ""
 
-#: src/AppDep.c:554
+#: src/AppDep.c:669
 #, c-format
 msgid "CommandLineToArgvW() failed.\n"
 msgstr ""

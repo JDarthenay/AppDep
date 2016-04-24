@@ -53,10 +53,6 @@ require ending slashes.
 * INSTALLDIR_SHARE should be the parent directory of INSTALLDIR_X86 and
 INSTALLDIR_X64.
 
-### Create required directories
-* for 32-bits building you need to create obj_x86 and bin_x86.
-* for 64-bits building you need to create obj_x64 and bin_x64.
-
 ### Build and install binaries
 
 * Build and install 32-bits binary: `gmake install_x86`

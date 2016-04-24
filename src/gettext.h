@@ -34,7 +34,7 @@
  * \file gettext.h
  * \brief Dynamic link with GNU gettext header.
  * \author <a href="mailto:julien.darthenay@free.fr">Julien Darthenay</a>
- * \version 1.0
+ * \version 1.1
  */
 
 #ifndef GETTEXT_H
@@ -53,18 +53,22 @@ extern const char *gettext(const char *msgid);
 
 /**
  * \brief Dynamic linking with GNU gettext intializations.
- * Searches libint with version number used during developement first.
+ * Searches libintl with version number used during developement first.
  * If not found launches the Windows command where to find any DLL
  * with name matching libintl*.dll.
  * If still not found, uses default English messages.
- * \param[in] dllname Default dll name, may be only a file name or a full
- * pathname. May be NULL if no default dll name.
+ * \param[in] libiconvdllname Default libiconv.dll name,
+ * may be only a file name or a full pathname.
+ * May be NULL if no default libiconv.dll name.
+ * \param[in] libintldllname Default libintl.dll name,
+ * may be only a file name or a full pathname.
+ * May be NULL if no default libintl.dll name.
  * \since 1.0
  * \code
  * #include "gettext.h"
  * int main(int agrc, char *argv[])
  * {
- *   init_gettext(NULL); // Initialization
+ *   init_gettext(NULL, NULL); // Initialization
  *
  *   printf(_("Hello World!\n"));
  *
@@ -74,7 +78,8 @@ extern const char *gettext(const char *msgid);
  * }
  * \endcode
  */
-extern void init_gettext(const wchar_t *dllname);
+extern void init_gettext(const wchar_t *libiconvdllname,
+                         const wchar_t *libintldllname);
 
 /**
  * \brief Freeing memory used by dynamic linking with GNU gettext.
@@ -83,13 +88,19 @@ extern void init_gettext(const wchar_t *dllname);
 extern void close_gettext();
 
 /**
- * \brief Environment variable used to specify libint.dll to be used
+ * \brief Environment variable used to specify libiconv.dll to be used
+ * \since 1.1
+ */
+#define VAR_LIBICONV L"LIBICONV_DLL"
+
+/**
+ * \brief Environment variable used to specify libintl.dll to be used
  * \since 1.0
  */
 #define VAR_LIBINT L"LIBINT_DLL"
 
 /**
- * \brief Pattern to be used to seach libint.dll.
+ * \brief Pattern to be used to seach libintl.dll.
  * \since 1.0
  */
 #define PATTERN_LIBINT L"libintl*.dll"

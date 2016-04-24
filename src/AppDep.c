@@ -37,7 +37,7 @@
  * \subsection step1 Step 1: Install
  * Copy the AppDep.exe in any directory in your current path.
  * \subsection step2 Step 2: Install translations
- * Install libint.dll. It should require iconv.dll.
+ * Install libintl.dll. It should require iconv.dll.
  * Copy the share directory in the parent directory of the one where
  * you installed AppDep.exe.
  * \section usage Basic usage
@@ -145,11 +145,12 @@ gcc -MM src/wgetopt.c -MT obj_x64/wgetopt.o>> makefile\endverbatim
  * \param[in] target File to be updated
  * \param[in] dem_line Demacation line before appended text
  * \param[in] nflag Empty text flag
+ * \param[in] qflag Quiet mode flag
  * \return Defined return code.
  */
 static int update_file(const wchar_t *target,
                        const wchar_t *dem_line,
-                       int nflag)
+                       int nflag, int qflag)
 {
   FILE *f = NULL;
   int b_line_feed = 1;
@@ -166,7 +167,10 @@ static int update_file(const wchar_t *target,
   // Opening target file
   if ((f = _wfopen(target, L"r+")) == NULL)
   {
-    perror("_wfopen");
+    if (!qflag)
+    {
+      perror("_wfopen");
+    }
     return RETURN_OPEN_ERR;
   }
 
@@ -178,7 +182,10 @@ static int update_file(const wchar_t *target,
       // Nothing more to be read: adding demarcation line
       if (!feof(f))
       {
-        perror("fgetws");
+        if (!qflag)
+        {
+          perror("fgetws");
+        }
         fclose(f);
         return RETURN_READ_ERR;
       }
@@ -186,28 +193,40 @@ static int update_file(const wchar_t *target,
 
       if (fseek(f, 0, SEEK_CUR) != 0)
       {
-        perror("fseek");
+        if (!qflag)
+        {
+          perror("fseek");
+        }
         fclose(f);
         return RETURN_WRITE_ERR;
       }
 
       if (!b_line_feed && fputwc(L'\n', f) == WEOF)
       {
-        perror("fputwc");
+        if (!qflag)
+        {
+          perror("fputwc");
+        }
         fclose(f);
         return RETURN_WRITE_ERR;
       }
 
       if (fputws(dem_line, f) == WEOF)
       {
-        perror("fputws");
+        if (!qflag)
+        {
+          perror("fputws");
+        }
         fclose(f);
         return RETURN_WRITE_ERR;
       }
 
       if (fputwc(L'\n', f) == WEOF)
       {
-        perror("fputwc");
+        if (!qflag)
+        {
+          perror("fputwc");
+        }
         fclose(f);
         return RETURN_WRITE_ERR;
       }
@@ -225,14 +244,20 @@ static int update_file(const wchar_t *target,
         // Found demarcation line but not end of line
         if (fseek(f, 0, SEEK_CUR) != 0)
         {
-          perror("fseek");
+          if (!qflag)
+          {
+            perror("fseek");
+          }
           fclose(f);
           return RETURN_WRITE_ERR;
         }
 
         if (fputwc('\n', f) == WEOF)
         {
-          perror("fputwc");
+          if (!qflag)
+          {
+            perror("fputwc");
+          }
           fclose(f);
           return RETURN_WRITE_ERR;
         }
@@ -246,7 +271,10 @@ static int update_file(const wchar_t *target,
         // Found demarcation line with end of line
         if (fseek(f, 0, SEEK_CUR) != 0)
         {
-          perror("fseek");
+          if (!qflag)
+          {
+            perror("fseek");
+          }
           fclose(f);
           return RETURN_WRITE_ERR;
         }
@@ -266,7 +294,10 @@ static int update_file(const wchar_t *target,
     // Opening target file again to get rid of stream orientation
     if ((pos_end_of_demarcation = ftello(f)) < 0)
     {
-      perror("ftello");
+      if (!qflag)
+      {
+        perror("ftello");
+      }
       fclose(f);
       return RETURN_WRITE_ERR;
     }
@@ -274,13 +305,19 @@ static int update_file(const wchar_t *target,
     fclose(f);
     if ((f = _wfopen(target, L"r+")) == NULL)
     {
-      perror("_wfopen");
+      if (!qflag)
+      {
+        perror("_wfopen");
+      }
       return RETURN_OPEN_ERR;
     }
 
     if (fseeko(f, pos_end_of_demarcation, SEEK_SET) < 0)
     {
-      perror("fseek");
+      if (!qflag)
+      {
+        perror("fseek");
+      }
       fclose(f);
       return RETURN_WRITE_ERR;
     }
@@ -292,7 +329,10 @@ static int update_file(const wchar_t *target,
           < STDIN_BUFFER_SIZE
        && !feof(stdin))
       {
-        perror("fread");
+        if (!qflag)
+        {
+          perror("fread");
+        }
         fclose(f);
         return RETURN_STDIN_ERR;
       }
@@ -304,7 +344,10 @@ static int update_file(const wchar_t *target,
         if (  fwrite(buffer_stdin, sizeof(char), lg_buffer_stdin, f)
             < lg_buffer_stdin)
         {
-          perror("fwrite");
+          if (!qflag)
+          {
+            perror("fwrite");
+          }
           fclose(f);
           return RETURN_WRITE_ERR;
         }
@@ -317,21 +360,30 @@ static int update_file(const wchar_t *target,
     // Check file is not to be truncated
     if ((pos_end_of_append = ftello(f)) < 0)
     {
-      perror("ftello");
+      if (!qflag)
+      {
+        perror("ftello");
+      }
       fclose(f);
       return RETURN_READ_ERR;
     }
 
     if (fseeko(f, 0, SEEK_END) < 0)
     {
-      perror("fseekp");
+      if (!qflag)
+      {
+        perror("fseekp");
+      }
       fclose(f);
       return RETURN_READ_ERR;
     }
 
     if ((pos_end_of_file = ftello(f)) < 0)
     {
-      perror("ftellp");
+      if (!qflag)
+      {
+        perror("ftellp");
+      }
       fclose(f);
       return RETURN_READ_ERR;
     }
@@ -351,12 +403,18 @@ static int update_file(const wchar_t *target,
 static struct woption long_options[] =
 {
   {L"help", wno_argument, NULL, L'h'},
+  {L"version", wno_argument, NULL, L'V'},
   {L"dem-line", wrequired_argument, NULL, L'l'},
-  {L"version", wno_argument, NULL, L'v'},
   {L"null", wno_argument, NULL, L'n'},
+  {L"quiet", wno_argument, NULL, L'q'},
   {L"libintl-dll", wrequired_argument, NULL, L'd'},
+  {L"libiconv-dll", wrequired_argument, NULL, L'i'},
+  {L"raw-output", wrequired_argument, NULL, L'r'},
+  {L"no-dll", wno_argument, NULL, L'r'},
   {NULL, 0, NULL, 0}
 };
+
+static wchar_t *short_options = L"hVl:nqd:i:r";
 
 /**
  * \brief Main using wide string arguments.
@@ -370,18 +428,21 @@ static int wmain(int argc, wchar_t *argv[])
   int c;
   int errflag = 0;
   int help_flag = 0;
-  int dem_line_flag = 0;
   int version_flag = 0;
   int null_flag = 0;
-  int libintl_dll_flag = 0;
+  int dem_line_flag = 0;
+  int quiet_flag = 0;
   const wchar_t *dem_line = DEFAULT_DEM_LINE;
-  wchar_t *libint_dll = NULL;
+  wchar_t *libintl_dll = NULL;
+  wchar_t *libiconv_dll = NULL;
+  int raw_flag = 0;
   int result = 0;
 
   // Command line analysis
   wopterr = 0;
   while (!errflag
-       && (c = wgetopt_long(argc, argv, L"hl:Vnd:", long_options, NULL)) != -1)
+       && (c = wgetopt_long(argc, argv, short_options, long_options, NULL))
+          != -1)
   {
     switch (c)
     {
@@ -390,7 +451,8 @@ static int wmain(int argc, wchar_t *argv[])
       break;
 
     case L'h':
-      if (help_flag || dem_line_flag || version_flag || null_flag)
+      if (   help_flag || version_flag 
+          || dem_line_flag || null_flag || quiet_flag)
       {
         errflag = 1;
       }
@@ -400,8 +462,20 @@ static int wmain(int argc, wchar_t *argv[])
       }
       break;
 
+    case L'V':
+      if (   help_flag || version_flag
+          || dem_line_flag || null_flag || quiet_flag)
+      {
+        errflag = 1;
+      }
+      else
+      {
+        version_flag = 1;
+      }
+      break;
+
     case L'l':
-      if (help_flag || dem_line_flag || version_flag)
+      if (help_flag || version_flag || dem_line_flag)
       {
         errflag = 1;
       }
@@ -409,17 +483,6 @@ static int wmain(int argc, wchar_t *argv[])
       {
         dem_line_flag = 1;
         dem_line = woptarg;
-      }
-      break;
-
-    case L'V':
-      if (help_flag || dem_line_flag || version_flag || null_flag)
-      {
-        errflag = 1;
-      }
-      else
-      {
-        version_flag = 1;
       }
       break;
 
@@ -434,15 +497,48 @@ static int wmain(int argc, wchar_t *argv[])
       }
       break;
 
-    case L'd':
-      if (libintl_dll_flag)
+    case L'q':
+      if (   help_flag || version_flag || quiet_flag
+          || libintl_dll != NULL || libiconv_dll != NULL)
       {
         errflag = 1;
       }
       else
       {
-        libintl_dll_flag = 1;
-        libint_dll = woptarg;
+        quiet_flag = 1;
+      }
+      break;
+
+    case L'd':
+      if (quiet_flag || raw_flag || libintl_dll != NULL)
+      {
+        errflag = 1;
+      }
+      else
+      {
+        libintl_dll = woptarg;
+      }
+      break;
+
+    case L'i':
+      if (quiet_flag || raw_flag || libiconv_dll != NULL)
+      {
+        errflag = 1;
+      }
+      else
+      {
+        libiconv_dll = woptarg;
+      }
+      break;
+
+    case L'r':
+      if (libintl_dll != NULL || libiconv_dll != NULL || raw_flag)
+      {
+        errflag = 1;
+      }
+      else
+      {
+        raw_flag = 1;
       }
       break;
     }
@@ -453,7 +549,10 @@ static int wmain(int argc, wchar_t *argv[])
     || (!(help_flag || version_flag) && woptind != argc - 1)))
         errflag = 1;
 
-  init_gettext(libint_dll);
+  if (!raw_flag && !quiet_flag)
+  {
+    init_gettext(libiconv_dll, libintl_dll);
+  }
 
   if (errflag)
   {
@@ -468,27 +567,40 @@ static int wmain(int argc, wchar_t *argv[])
     // Help message
     printf(_("\
 Append standard input at the end of a file.\n\
-Designed to add dependencies at the end of a makefile.\n\n\
+Designed to add dependencies at the end of a makefile.\n\
+\n\
 Usage:\n\
-%s [-n] [-l LINE_TEXT] [-d LIBINT_DLL] TARGET\n\
-%s -h [-d LIBINT_DLL]\n\
-%s -v [-d LIBINT_DLL]\n\n\
+%s [appending options] [DLL options] TARGET\n\
+%s -h [DLL options]\n\
+%s -v [DLL options]\n\
+\n\
   -V,  --version                 display the version of %s and exit.\n\
   -h,  --help                    print this help.\n\
-  -n,  --null                    append nothing instead of standard input.\n\
-  -l,  --dem-line LINE_TEXT      LINE_TEXT will be used\n\
-                                 as a demarcation line.\n\
-  -d,  --libintl-dll LIBINT_DLL  try to use LIBINT_DLL\n\
-                                 as a libint.dll dynamic library.\n\n\
+\n\
+Appending:\n\
+  -n,  --null                append nothing instead of standard input.\n\
+  -l,  --dem-line LINE_TEXT  LINE_TEXT will be used as a demarcation line.\n\
+  -q,  --quiet               do not print any error message (implies -r).\n\
+\n\
+DLL:\n\
+  -i,  --libiconv-dll LIBICONV_DLL  try to use LIBICONV_DLL\n\
+                                    as a libiconv.dll dynamic library.\n\
+  -d,  --libintl-dll LIBINT_DLL     try to use LIBINT_DLL\n\
+                                    as a libintl.dll dynamic library.\n\
+  -r,  --raw-output,  --no-dll      do not try to load any DLL.\n\
+\n\
 Default demarcation line is:\n\
 %ls\n\
-If no LIBINT_DLL is given or loading LIBINT_DLL failed environment variable,\n\
+If no LIBICONV_DLL is given or loading LIBICONV_DLL failed,\n\
+environment variable %%%ls%% will be used. If this also fails,\n\
+libintl.dll will have to load libinconv.dll by itself.\n\
+If no LIBINT_DLL is given or loading LIBINT_DLL failed, environment variable\n\
 %%%ls%% will be used.\n\
 If this also fails, %ls will be searched in Path.\n\
 "),
            APPDEP_APPLICATION, APPDEP_APPLICATION, APPDEP_APPLICATION,
            APPDEP_APPLICATION, DEFAULT_DEM_LINE,
-           VAR_LIBINT, PATTERN_LIBINT);
+           VAR_LIBICONV, VAR_LIBINT, PATTERN_LIBINT);
     result = RETURN_OK;
   }
   else if (version_flag)
@@ -506,27 +618,30 @@ If this also fails, %ls will be searched in Path.\n\
   else
   {
     // Update required file
-    result = update_file(argv[woptind], dem_line, null_flag);
+    result = update_file(argv[woptind], dem_line, null_flag, quiet_flag);
 
-    switch (result)
+    if (!quiet_flag)
     {
-    case RETURN_OPEN_ERR:
-      fprintf(stderr,
-              _("File %ls was not found or was not reachable.\n"),
-              argv[woptind]);
-      break;
+      switch (result)
+      {
+      case RETURN_OPEN_ERR:
+        fprintf(stderr,
+                _("File %ls was not found or was not reachable.\n"),
+                argv[woptind]);
+        break;
 
-    case RETURN_READ_ERR:
-      fprintf(stderr, _("Read error in file %ls.\n"), argv[woptind]);
-      break;
+      case RETURN_READ_ERR:
+        fprintf(stderr, _("Read error in file %ls.\n"), argv[woptind]);
+        break;
 
-    case RETURN_WRITE_ERR:
-      fprintf(stderr, _("Write error in file %ls.\n"), argv[woptind]);
-      break;
+      case RETURN_WRITE_ERR:
+        fprintf(stderr, _("Write error in file %ls.\n"), argv[woptind]);
+        break;
 
-    case RETURN_STDIN_ERR:
-      fprintf(stderr, _("Read error in standard input.\n"));
-      break;
+      case RETURN_STDIN_ERR:
+        fprintf(stderr, _("Read error in standard input.\n"));
+        break;
+      }
     }
   }
 

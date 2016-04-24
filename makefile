@@ -27,7 +27,7 @@ SHELL=C:\Windows\System32\cmd.exe
 
 # path to be used for various commands
 # the ligher, the better
-# use ; between paths
+# use semi-colon between paths
 # use backslash as a directory separator
 PATH=C:\Windows\system32;C:\Windows
 PATH_BUILD_X86=
@@ -41,7 +41,7 @@ concatpath=$(if $1,$(if $2,$1;$2,$1),$2)
 APP=AppDep
 
 # directories
-# please use slash as a directory separator and end paths with slashes
+# please use slash as a directory separator and end paths with slash
 INSTALLDIR_X86=
 INSTALLDIR_X64=
 INSTALLDIR_SHARE=
@@ -53,6 +53,7 @@ SRCDIR=src/
 RESDIR=res/
 PODIR=po/
 SHAREDIR=
+createdir=@if not exist $(subst /,\,$1) mkdir $(subst /,\,$1)
 
 # c compiler
 CC=gcc
@@ -117,10 +118,10 @@ extract_translation:$(POT)
 
 install:install_x86 install_x64
 
-install_x86:compile_x86 install_translation
+install_x86:compile_x86
 	for %%i in ($(subst /,\,$(EXE_X86))) do copy %%i $(subst /,\,$(INSTALLDIR_X86))
 
-install_x64:compile_x64 install_translation
+install_x64:compile_x64
 	for %%i in ($(subst /,\,$(EXE_X64))) do copy %%i $(subst /,\,$(INSTALLDIR_X64))
 
 install_translation:share_translation
@@ -130,10 +131,10 @@ share_translation:$(MOS)
 
 uninstall:uninstall_x86 uninstall_x64
 
-uninstall_x86:uninstall_translation
+uninstall_x86:
 	for %%i in ($(subst /,\,$(EXE:$(BINDIR_X86)%.exe=$(INSTALLDIR_X86)%.exe))) do if exist %%i del %%i
 
-uninstall_x64:uninstall_translation
+uninstall_x64:
 	for %%i in ($(subst /,\,$(EXE:$(BINDIR_X64)%.exe=$(INSTALLDIR_X64)%.exe))) do if exist %%i del %%i
 
 uninstall_translation:
@@ -141,11 +142,11 @@ uninstall_translation:
 
 archive:$(ZIP)
 
-rebuild:mrproper all
+rebuild:clean all
 
-rebuild_x86:mrproper_x86 compile_x86
+rebuild_x86:clean_x86 compile_x86
 
-rebuild_x64:mrproper_x64 compile_x64
+rebuild_x64:clean_x64 compile_x64
 
 clean:clean_x86 clean_x64
 
@@ -162,13 +163,9 @@ clean_translation:
 	for %%i in ($(subst /,\,$(SHAREDIR)share)) do if exist %%i rmdir /S /Q %%i
 	for %%i in ($(subst /,\,$(PODIR)*.po~)) do if exist %%i del %%i
 
-mrproper:mrproper_x86 mrproper_x64
-
-mrproper_x86:clean_x86
-	for %%i in ($(subst /,\,$(EXE_X86))) do if exist %%i del %%i
-
-mrproper_x64:clean_x64
-	for %%i in ($(subst /,\,$(EXE_X64))) do if exist %%i del %%i
+mrproper:clean clean_translation
+	for %%i in ($(subst /,\,$(EXE_X86) $(EXE_X64))) do if exist %%i del %%i
+	if exist htmldoc rmdir /S /Q htmldoc
 
 $(ZIP):PATH:=$(call concatpath,$(PATH),$(PATH_ZT))
 $(APP)-src.7z:$(TXT) $(RES) $(SRCDIR)$(APP).c $(SRCDIR)gettext.h $(SRCDIR)gettext.c $(SRCDIR)wgetopt.h $(SRCDIR)wgetopt.c $(POT) $(POS) $(GMOS) update-ver.bat makefile Doxyfile README.md
@@ -185,38 +182,49 @@ $(APP)-htmldoc.7z:$(TXT) htmldoc
 
 $(EXE_X86) $(OBJS_X86):PATH:=$(call concatpath,$(PATH),$(PATH_BUILD_X86))
 $(EXE_X86):$(OBJS_X86)
+	$(call createdir,$(BINDIR_X86))
 	$(CC) $(CFLAGS) $(CPPFLAGS) $(CFLAGS_X86) -o $@ $(OBJS_X86) $(LDFLAGS)
 
 $(EXE_X64) $(OBJS_X64):PATH:=$(call concatpath,$(PATH),$(PATH_BUILD_X64))
 $(EXE_X64):$(OBJS_X64)
+	$(call createdir,$(BINDIR_X64))
 	$(CC) $(CFLAGS) $(CPPFLAGS) $(CFLAGS_X64) -o $@ $(OBJS_X64) $(LDFLAGS)
 
 $(OBJDIR_X86)$(APP).o:$(SRCDIR)$(APP).c $(SRCDIR)gettext.h $(SRCDIR)wgetopt.h $(SRCDIR)version.h
+	$(call createdir,$(OBJDIR_X86))
 	$(CC) $(CFLAGS) $(CPPFLAGS) $(CFLAGS_X86) -o $@ -c $<
 
 $(OBJDIR_X64)$(APP).o:$(SRCDIR)$(APP).c $(SRCDIR)gettext.h $(SRCDIR)wgetopt.h $(SRCDIR)version.h
+	$(call createdir,$(OBJDIR_X64))
 	$(CC) $(CFLAGS) $(CPPFLAGS) $(CFLAGS_X64) -o $@ -c $<
 
 $(OBJDIR_X86)gettext.o:$(SRCDIR)gettext.c $(SRCDIR)gettext.h
+	$(call createdir,$(OBJDIR_X86))
 	$(CC) $(CFLAGS) $(CPPFLAGS) $(CFLAGS_X86) -o $@ -c $<
 
 $(OBJDIR_X64)gettext.o:$(SRCDIR)gettext.c $(SRCDIR)gettext.h
+	$(call createdir,$(OBJDIR_X64))
 	$(CC) $(CFLAGS) $(CPPFLAGS) $(CFLAGS_X64) -o $@ -c $<
 
 $(OBJDIR_X86)wgetopt.o:$(SRCDIR)wgetopt.c $(SRCDIR)wgetopt.h
+	$(call createdir,$(OBJDIR_X86))
 	$(CC) $(CFLAGS) $(CPPFLAGS) $(CFLAGS_X86) -o $@ -c $<
 
 $(OBJDIR_X64)wgetopt.o:$(SRCDIR)wgetopt.c $(SRCDIR)wgetopt.h
+	$(call createdir,$(OBJDIR_X64))
 	$(CC) $(CFLAGS) $(CPPFLAGS) $(CFLAGS_X64) -o $@ -c $<
 
 $(OBJDIR_X86)$(APP)_res.o:$(RES)
+	$(call createdir,$(OBJDIR_X86))
 	$(RC) $(RFCLAGS) $(RCFLAGS_X86) -o $@ $<
 
 $(OBJDIR_X64)$(APP)_res.o:$(RES)
+	$(call createdir,$(OBJDIR_X64))
 	$(RC) $(RFCLAGS) $(RCFLAGS_X64) -o $@ $<
 
 $(POT) $(PODIR)%.po $(GMOS) $(MOS):PATH:=$(call concatpath,$(PATH),$(PATH_GETTEXT))
 $(POT):$(SRCDIR)$(APP).c $(SRCDIR)gettext.c $(SRCDIR)wgetopt.c
+	$(call createdir,$(PODIR))
 	$(XGT) $(XGTFLAGS) -o $@ $?
 
 $(PODIR)%.po:$(POT)
@@ -226,11 +234,11 @@ $(PODIR)%.gmo:$(PODIR)%.po
 	$(MFMT) $(MFFLAGS) -o $@ $<
 
 $(SHARE_DIR)share/locale/%/LC_MESSAGES/$(APP).mo:$(PODIR)%.gmo
-	if not exist $(subst /,\,$(dir $@)) mkdir $(subst /,\,$(dir $@))
+	$(call createdir,$(dir $@))
 	copy $(subst /,\,$<) $(subst /,\,$@)
 
 htmldoc:PATH:=$(call concatpath,$(PATH),$(PATH_DOCGEN))
 htmldoc:
 	$(DOCGEN) $(DOCFLAGS)
 
-.PHONY:install install_x86 install_x64 install_translation share_translation uninstall uninstall_x86 uninstall_x64 uninstall_translation archive rebuild rebuild_x86 rebuild_x64 all compile_x86 compile_x64 compile_translation merge_translation extract_translation clean clean_x86 clean_x64 zclean clean_translation mrproper mrproper_x86 mrproper_x64 htmldoc
+.PHONY:install install_x86 install_x64 install_translation share_translation uninstall uninstall_x86 uninstall_x64 uninstall_translation archive rebuild rebuild_x86 rebuild_x64 all compile_x86 compile_x64 compile_translation merge_translation extract_translation clean clean_x86 clean_x64 zclean clean_translation mrproper htmldoc

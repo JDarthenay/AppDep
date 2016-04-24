@@ -26,7 +26,7 @@ L'archive contenant ce fichier peut être téléchargée sur
 <http://julien.darthenay.free.fr> ou
 <https://github.com/JDarthenay/AppDep>.
 
-AppDep - version 2.0
+AppDep - version 2.1
 
 AppDep.exe est un outil de concaténation des dépendances à la fin d'un fichier.
 Il recherche la ligne de démarcation (spécifiée ou par défaut) dans le fichier
@@ -101,9 +101,9 @@ Propriétés du fichier AppDep.exe.
 src/AppDep.c - module principal de l'outil.
 
 src/gettext.h - fichier en-tête du module de chargement dynamique de
-libint.dll.
+libintl.dll.
 
-src/gettext.c - module de chargement dynamique de libint.dll.
+src/gettext.c - module de chargement dynamique de libintl.dll.
 
 src/wgetopt.h - fichier en-tête du module getopt pour wide strings.
 
@@ -193,3 +193,8 @@ appel à GNU make.
   L'exemple makefile.txt sera dorénavant le makefile de la version 2.0.
   Ajout d'une page principale dans la documentation générée par Doxygen.
   Mise en ligne sur GitHub.
+24 avril 2016 - version 2.1
+  L'utilisation du makefile crée maintenant tous les dossiers requis.
+  Ajout de l'option -i pour spécifier la bibliothèque libiconv.dll à charger.
+  Ajout de l'option -r pour spécifier de ne charger aucune DLL.
+  Ajout de l'option -q, le mode silencieux.
