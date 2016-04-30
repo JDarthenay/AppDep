@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: AppDep 2.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-04-24 14:25+0200\n"
+"POT-Creation-Date: 2016-04-30 18:31+0200\n"
 "PO-Revision-Date: 2016-04-14 16:21+0200\n"
 "Last-Translator: <julien.darthenay@free.fr>\n"
 "Language-Team: French\n"
@@ -17,21 +17,21 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
-#: src/AppDep.c:561
+#: src/AppDep.c:562
 #, c-format
 msgid "Incorrects arguments, see: %s --help\n"
 msgstr "Arguments incorrects, voir: %s --help\n"
 
-#: src/AppDep.c:568
+#: src/AppDep.c:569
 #, c-format
 msgid ""
 "Append standard input at the end of a file.\n"
 "Designed to add dependencies at the end of a makefile.\n"
 "\n"
 "Usage:\n"
-"%s [appending options] [DLL options] TARGET\n"
-"%s -h [DLL options]\n"
-"%s -v [DLL options]\n"
+"%s [appending options] [gettext options] TARGET\n"
+"%s -h [gettext options]\n"
+"%s -v [gettext options]\n"
 "\n"
 "  -V,  --version                 display the version of %s and exit.\n"
 "  -h,  --help                    print this help.\n"
@@ -41,7 +41,7 @@ msgid ""
 "  -l,  --dem-line LINE_TEXT  LINE_TEXT will be used as a demarcation line.\n"
 "  -q,  --quiet               do not print any error message (implies -r).\n"
 "\n"
-"DLL:\n"
+"gettext:\n"
 "  -i,  --libiconv-dll LIBICONV_DLL  try to use LIBICONV_DLL\n"
 "                                    as a libiconv.dll dynamic library.\n"
 "  -d,  --libintl-dll LIBINT_DLL     try to use LIBINT_DLL\n"
@@ -57,14 +57,18 @@ msgid ""
 "variable\n"
 "%%%ls%% will be used.\n"
 "If this also fails, %ls will be searched in Path.\n"
+"By default, locales are searched from the executable position to\n"
+"../share/locale. But depending on system, this could not work.\n"
+"If you have the problem you can provide locales directory either by setting\n"
+"environment variable %%%s%%.\n"
 msgstr ""
 "Concatène l'entrée standard à la fin d'un fichier.\n"
 "Conçu pour ajouter des dépendances à la fin d'un makefile.\n"
 "\n"
 "Utilisation :\n"
-"%s [options de concaténation] [options de DLL] CIBLE\n"
-"%s -h [options de concaténation]\n"
-"%s -v [options de concaténation]\n"
+"%s [options de concaténation] [options de gettext] CIBLE\n"
+"%s -h [options de gettext]\n"
+"%s -V [options de gettext]\n"
 "\n"
 "  -V,  --version                 affiche la version de %s et s'achève.\n"
 "  -h,  --help                    Affiche ce message d'aide.\n"
@@ -75,48 +79,52 @@ msgstr ""
 "                             comme ligne de démarcation.\n"
 "  -q,  --quiet               n'afficher aucun message (implique -r).\n"
 "\n"
-"DLL:\n"
+"gettext:\n"
 "  -i,  --libiconv-dll LIBICONV_DLL  essaie d'utiliser LIBICONV_DLL comme\n"
 "                                    bibliothèque dynamique libiconv.dll.\n"
 "  -d,  --libintl-dll LIBINT_DLL     essaie d'utiliser LIBINT_DLL comme\n"
 "                                    bibliothèque dynamique libint.dll.\n"
 "  -r,  --raw-output,  --no-dll      ne pas charger la moindre DLL.\n"
 "\n"
-"La ligne de démarcation pas défaut est :\n"
+"La ligne de démarcation par défaut est :\n"
 "%ls\n"
-"Si LIBICONV_DLL n'est pas spécifié ou si son chargement a échoué\n"
+"Si LIBICONV_DLL n'est pas spécifié ou si son chargement a échoué,\n"
 "la variable d'environnement %%%ls%% sera utilisée.\n"
 "Si cela échoue aussi, libintl.dll devra charger libinconv.dll elle-même.\n"
 "Si LIBINT_DLL n'est pas spécifié ou si son chargement a échoué\n"
 "la variable d'environnement %%%ls%% sera utilisée.\n"
 "Si cela échoue aussi, %ls sera recherché dans le Path.\n"
+"Par défaut, les locales sont recherchés depuis la position de l'éxécutable\n"
+"dans ../share/locale. Mais en fonction du système, ceci peut ne pas\n"
+"fonctionner. Si vous avez ce problème vous pouvez spécifer le dossier des\n"
+"locales en positionnant la variable d'environnment %%%s%%.\n"
 
-#: src/AppDep.c:609
+#: src/AppDep.c:614
 #, c-format
 msgid "%s version %d.%d.%d.%d\n"
 msgstr "%s version %d.%d.%d.%d\n"
 
-#: src/AppDep.c:629
+#: src/AppDep.c:634
 #, c-format
 msgid "File %ls was not found or was not reachable.\n"
 msgstr "Le fichier %ls est absent ou inaccessible.\n"
 
-#: src/AppDep.c:634
+#: src/AppDep.c:639
 #, c-format
 msgid "Read error in file %ls.\n"
 msgstr "Erreur de lecture du fichier %ls.\n"
 
-#: src/AppDep.c:638
+#: src/AppDep.c:643
 #, c-format
 msgid "Write error in file %ls.\n"
 msgstr "Erreur d'écriture dans le fichier %ls.\n"
 
-#: src/AppDep.c:642
+#: src/AppDep.c:647
 #, c-format
 msgid "Read error in standard input.\n"
 msgstr "Erreur de lecture de l'entrée standard.\n"
 
-#: src/AppDep.c:669
+#: src/AppDep.c:674
 #, c-format
 msgid "CommandLineToArgvW() failed.\n"
 msgstr "Échec de CommandLineToArgvW().\n"

@@ -34,7 +34,7 @@
  * \file gettext.c
  * \brief Dynamic link with GNU gettext.
  * \author <a href="mailto:julien.darthenay@free.fr">Julien Darthenay</a>
- * \version 1.0
+ * \version 1.2
  */
 
 #define GETTEXT_C
@@ -53,6 +53,12 @@
  * \since 1.0
  */
 #define WHERE_BUFFER_SIZE 1024
+
+/**
+ * \brief Default locale directory.
+ * \since 1.2
+ */
+#define DEFAULT_LOCALEDIR "/usr/share/locale"
 
 /**
  * \brief Default gettext() function.
@@ -113,7 +119,17 @@ void init_gettext(const wchar_t *libiconvdllname,
       if (   p_gettext != NULL && p_bindtextdomain != NULL
           && p_textdomain != NULL)
       {
-        (*p_bindtextdomain)(APPDEP_APPLICATION, "/usr/share/locale");
+        char *var_localedir;
+
+        if ((var_localedir = getenv(VAR_LOCALEDIR)) != NULL)
+        {
+          (*p_bindtextdomain)(APPDEP_APPLICATION, var_localedir);
+        }
+        else
+        {
+          (*p_bindtextdomain)(APPDEP_APPLICATION, DEFAULT_LOCALEDIR);
+        }
+
         (*p_textdomain)(APPDEP_APPLICATION);
       }
       else

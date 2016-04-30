@@ -53,14 +53,13 @@ SRCDIR=src/
 RESDIR=res/
 PODIR=po/
 SHAREDIR=
-createdir=@if not exist $(subst /,\,$1) mkdir $(subst /,\,$1)
 
 # c compiler
 CC=gcc
 WINVER=0x0400
 CFLAGS=-std=gnu99 -Wextra -Wall -Werror
-CFLAGS_X86=-march=athlon-xp
-CFLAGS_X64=-march=x86-64
+CFLAGS_X86=-m32 -march=athlon-xp
+CFLAGS_X64=-m64 -march=x86-64
 CPPFLAGS=-D_WIN32_WINNT=$(WINVER) -D__USE_MINGW_ANSI_STDIO
 LDFLAGS=
 
@@ -118,13 +117,13 @@ extract_translation:$(POT)
 
 install:install_x86 install_x64
 
-install_x86:compile_x86
+install_x86:compile_x86|$(INSTALLDIR_X86)
 	for %%i in ($(subst /,\,$(EXE_X86))) do copy %%i $(subst /,\,$(INSTALLDIR_X86))
 
-install_x64:compile_x64
+install_x64:compile_x64|$(INSTALLDIR_X64)
 	for %%i in ($(subst /,\,$(EXE_X64))) do copy %%i $(subst /,\,$(INSTALLDIR_X64))
 
-install_translation:share_translation
+install_translation:share_translation|$(INSTALLDIR_SHARE)
 	xcopy /E /I /Y $(subst /,\,$(SHAREDIR)share) $(subst /,\,$(INSTALLDIR_SHARE)share)
 
 share_translation:$(MOS)
@@ -181,50 +180,39 @@ $(APP)-htmldoc.7z:$(TXT) htmldoc
 	$(ZT) $(ZCOM) $@ $(ZLAGS) $?
 
 $(EXE_X86) $(OBJS_X86):PATH:=$(call concatpath,$(PATH),$(PATH_BUILD_X86))
-$(EXE_X86):$(OBJS_X86)
-	$(call createdir,$(BINDIR_X86))
+$(EXE_X86):$(OBJS_X86)|$(BINDIR_X86)
 	$(CC) $(CFLAGS) $(CPPFLAGS) $(CFLAGS_X86) -o $@ $(OBJS_X86) $(LDFLAGS)
 
 $(EXE_X64) $(OBJS_X64):PATH:=$(call concatpath,$(PATH),$(PATH_BUILD_X64))
-$(EXE_X64):$(OBJS_X64)
-	$(call createdir,$(BINDIR_X64))
+$(EXE_X64):$(OBJS_X64)|$(BINDIR_X64)
 	$(CC) $(CFLAGS) $(CPPFLAGS) $(CFLAGS_X64) -o $@ $(OBJS_X64) $(LDFLAGS)
 
-$(OBJDIR_X86)$(APP).o:$(SRCDIR)$(APP).c $(SRCDIR)gettext.h $(SRCDIR)wgetopt.h $(SRCDIR)version.h
-	$(call createdir,$(OBJDIR_X86))
+$(OBJDIR_X86)$(APP).o:$(SRCDIR)$(APP).c $(SRCDIR)gettext.h $(SRCDIR)wgetopt.h $(SRCDIR)version.h|$(OBJDIR_X86)
 	$(CC) $(CFLAGS) $(CPPFLAGS) $(CFLAGS_X86) -o $@ -c $<
 
-$(OBJDIR_X64)$(APP).o:$(SRCDIR)$(APP).c $(SRCDIR)gettext.h $(SRCDIR)wgetopt.h $(SRCDIR)version.h
-	$(call createdir,$(OBJDIR_X64))
+$(OBJDIR_X64)$(APP).o:$(SRCDIR)$(APP).c $(SRCDIR)gettext.h $(SRCDIR)wgetopt.h $(SRCDIR)version.h|$(OBJDIR_X64)
 	$(CC) $(CFLAGS) $(CPPFLAGS) $(CFLAGS_X64) -o $@ -c $<
 
-$(OBJDIR_X86)gettext.o:$(SRCDIR)gettext.c $(SRCDIR)gettext.h
-	$(call createdir,$(OBJDIR_X86))
+$(OBJDIR_X86)gettext.o:$(SRCDIR)gettext.c $(SRCDIR)gettext.h $(SRCDIR)version.h|$(OBJDIR_X86)
 	$(CC) $(CFLAGS) $(CPPFLAGS) $(CFLAGS_X86) -o $@ -c $<
 
-$(OBJDIR_X64)gettext.o:$(SRCDIR)gettext.c $(SRCDIR)gettext.h
-	$(call createdir,$(OBJDIR_X64))
+$(OBJDIR_X64)gettext.o:$(SRCDIR)gettext.c $(SRCDIR)gettext.h $(SRCDIR)version.h|$(OBJDIR_X64)
 	$(CC) $(CFLAGS) $(CPPFLAGS) $(CFLAGS_X64) -o $@ -c $<
 
-$(OBJDIR_X86)wgetopt.o:$(SRCDIR)wgetopt.c $(SRCDIR)wgetopt.h
-	$(call createdir,$(OBJDIR_X86))
+$(OBJDIR_X86)wgetopt.o:$(SRCDIR)wgetopt.c $(SRCDIR)wgetopt.h|$(OBJDIR_X86)
 	$(CC) $(CFLAGS) $(CPPFLAGS) $(CFLAGS_X86) -o $@ -c $<
 
-$(OBJDIR_X64)wgetopt.o:$(SRCDIR)wgetopt.c $(SRCDIR)wgetopt.h
-	$(call createdir,$(OBJDIR_X64))
+$(OBJDIR_X64)wgetopt.o:$(SRCDIR)wgetopt.c $(SRCDIR)wgetopt.h|$(OBJDIR_X64)
 	$(CC) $(CFLAGS) $(CPPFLAGS) $(CFLAGS_X64) -o $@ -c $<
 
-$(OBJDIR_X86)$(APP)_res.o:$(RES)
-	$(call createdir,$(OBJDIR_X86))
+$(OBJDIR_X86)$(APP)_res.o:$(RES)|$(OBJDIR_X86)
 	$(RC) $(RFCLAGS) $(RCFLAGS_X86) -o $@ $<
 
-$(OBJDIR_X64)$(APP)_res.o:$(RES)
-	$(call createdir,$(OBJDIR_X64))
+$(OBJDIR_X64)$(APP)_res.o:$(RES)|$(OBJDIR_X64)
 	$(RC) $(RFCLAGS) $(RCFLAGS_X64) -o $@ $<
 
 $(POT) $(PODIR)%.po $(GMOS) $(MOS):PATH:=$(call concatpath,$(PATH),$(PATH_GETTEXT))
-$(POT):$(SRCDIR)$(APP).c $(SRCDIR)gettext.c $(SRCDIR)wgetopt.c
-	$(call createdir,$(PODIR))
+$(POT):$(SRCDIR)$(APP).c $(SRCDIR)gettext.c $(SRCDIR)wgetopt.c|$(PODIR)
 	$(XGT) $(XGTFLAGS) -o $@ $?
 
 $(PODIR)%.po:$(POT)
@@ -234,8 +222,11 @@ $(PODIR)%.gmo:$(PODIR)%.po
 	$(MFMT) $(MFFLAGS) -o $@ $<
 
 $(SHARE_DIR)share/locale/%/LC_MESSAGES/$(APP).mo:$(PODIR)%.gmo
-	$(call createdir,$(dir $@))
+	@if not exist $(subst /,\,$(dir $@)) mkdir $(subst /,\,$(dir $@))
 	copy $(subst /,\,$<) $(subst /,\,$@)
+
+$(INSTALLDIR_X86) $(INSTALLDIR_X64) $(INSTALLDIR_SHARE) $(BINDIR_X86) $(BINDIR_X64) $(OBJDIR_X86) $(OBJDIR_X64) $(PODIR):
+	mkdir $(subst /,\,$@)
 
 htmldoc:PATH:=$(call concatpath,$(PATH),$(PATH_DOCGEN))
 htmldoc:

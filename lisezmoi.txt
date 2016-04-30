@@ -26,7 +26,7 @@ L'archive contenant ce fichier peut être téléchargée sur
 <http://julien.darthenay.free.fr> ou
 <https://github.com/JDarthenay/AppDep>.
 
-AppDep - version 2.1
+AppDep - version 2.2
 
 AppDep.exe est un outil de concaténation des dépendances à la fin d'un fichier.
 Il recherche la ligne de démarcation (spécifiée ou par défaut) dans le fichier
@@ -198,3 +198,7 @@ appel à GNU make.
   Ajout de l'option -i pour spécifier la bibliothèque libiconv.dll à charger.
   Ajout de l'option -r pour spécifier de ne charger aucune DLL.
   Ajout de l'option -q, le mode silencieux.
+30 avril 2016 - version 2.2
+  Ajout d'un fichier .gitignore.
+  Améliorations supplémantaires du makefile.
+  Ajout de la possibilité de spécifier où chercher les locales.

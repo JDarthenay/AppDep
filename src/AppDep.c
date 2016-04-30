@@ -532,7 +532,8 @@ static int wmain(int argc, wchar_t *argv[])
       break;
 
     case L'r':
-      if (libintl_dll != NULL || libiconv_dll != NULL || raw_flag)
+      if (   libintl_dll != NULL || libiconv_dll != NULL
+          || raw_flag)
       {
         errflag = 1;
       }
@@ -570,9 +571,9 @@ Append standard input at the end of a file.\n\
 Designed to add dependencies at the end of a makefile.\n\
 \n\
 Usage:\n\
-%s [appending options] [DLL options] TARGET\n\
-%s -h [DLL options]\n\
-%s -v [DLL options]\n\
+%s [appending options] [gettext options] TARGET\n\
+%s -h [gettext options]\n\
+%s -v [gettext options]\n\
 \n\
   -V,  --version                 display the version of %s and exit.\n\
   -h,  --help                    print this help.\n\
@@ -582,7 +583,7 @@ Appending:\n\
   -l,  --dem-line LINE_TEXT  LINE_TEXT will be used as a demarcation line.\n\
   -q,  --quiet               do not print any error message (implies -r).\n\
 \n\
-DLL:\n\
+gettext:\n\
   -i,  --libiconv-dll LIBICONV_DLL  try to use LIBICONV_DLL\n\
                                     as a libiconv.dll dynamic library.\n\
   -d,  --libintl-dll LIBINT_DLL     try to use LIBINT_DLL\n\
@@ -597,10 +598,14 @@ libintl.dll will have to load libinconv.dll by itself.\n\
 If no LIBINT_DLL is given or loading LIBINT_DLL failed, environment variable\n\
 %%%ls%% will be used.\n\
 If this also fails, %ls will be searched in Path.\n\
+By default, locales are searched from the executable position to\n\
+../share/locale. But depending on system, this could not work.\n\
+If you have the problem you can provide locales directory either by setting\n\
+environment variable %%%s%%.\n\
 "),
            APPDEP_APPLICATION, APPDEP_APPLICATION, APPDEP_APPLICATION,
            APPDEP_APPLICATION, DEFAULT_DEM_LINE,
-           VAR_LIBICONV, VAR_LIBINT, PATTERN_LIBINT);
+           VAR_LIBICONV, VAR_LIBINT, PATTERN_LIBINT, VAR_LOCALEDIR);
     result = RETURN_OK;
   }
   else if (version_flag)
