@@ -175,16 +175,16 @@ mrproper:clean clean_translation
 
 $(ZIP):PATH:=$(call concatpath,$(PATH),$(PATH_ZT))
 $(APP)-src.7z:$(TXT) $(RES) $(SRCDIR)$(APP).c $(SRCDIR)gettext.h $(SRCDIR)gettext.c $(SRCDIR)wgetopt.h $(SRCDIR)wgetopt.c $(POT) $(POS) $(GMOS) update-ver.bat makefile Doxyfile README.md
-	$(ZT) $(ZCOM) $@ $(ZFLAGS) $?
+	$(ZT) $(ZCOM) $@ $(ZFLAGS) $^
 
 $(APP)-bin32.7z:$(TXT) $(EXE_X86) $(MOS)
-	$(ZT) $(ZCOM) $@ $(ZFLAGS) $?
+	$(ZT) $(ZCOM) $@ $(ZFLAGS) $^
 
 $(APP)-bin64.7z:$(TXT) $(EXE_X64) $(MOS)
-	$(ZT) $(ZCOM) $@ $(ZFLAGS) $?
+	$(ZT) $(ZCOM) $@ $(ZFLAGS) $^
 
 $(APP)-htmldoc.7z:$(TXT) htmldoc
-	$(ZT) $(ZCOM) $@ $(ZLAGS) $?
+	$(ZT) $(ZCOM) $@ $(ZLAGS) $^
 
 $(EXE_X86) $(OBJS_X86):PATH:=$(call concatpath,$(PATH),$(PATH_BUILD_X86))
 $(EXE_X86):$(OBJS_X86)|$(BINDIR_X86)
@@ -208,7 +208,7 @@ $(OBJDIR_X64)%.o:$(SRCDIR)%.c|$(OBJDIR_X64)
 
 $(POT) $(PODIR)%.po $(GMOS) $(MOS):PATH:=$(call concatpath,$(PATH),$(PATH_GETTEXT))
 $(POT):$(SRCDIR)$(APP).c $(SRCDIR)gettext.c $(SRCDIR)wgetopt.c|$(PODIR)
-	$(XGT) $(XGTFLAGS) -o $@ $?
+	$(XGT) $(XGTFLAGS) -o $@ $^
 
 $(PODIR)%.po:$(POT)
 	if not exist $(subst /,\,$@) ($(MINIT) $(MIFLAGS) -l $(@:$(PODIR)%.po=%) -o $@ -i $<) else $(MMERGE) $(MMFLAGS) -U $@ $<

@@ -26,7 +26,7 @@ The archive file containing this file is available at
 <http://julien.darthenay.free.fr> or
 <https://github.com/JDarthenay/AppDep>.
 
-AppDep - version 2.2
+AppDep - version 2.2.1
 
 AppDep.exe is a tool you can use to append dependencies at the end of a file.
 It searches the demarcation line (being a given one or the default one) in the
@@ -197,3 +197,5 @@ April 30, 2016 - version 2.2
   Adding .gitignore file.
   Supplementary makefile improvements.
   Adding ability to choose where to get locales.
+May 1, 2016 - version 2.2.1
+  Minor makefile fix.

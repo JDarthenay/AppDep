@@ -26,7 +26,7 @@ L'archive contenant ce fichier peut être téléchargée sur
 <http://julien.darthenay.free.fr> ou
 <https://github.com/JDarthenay/AppDep>.
 
-AppDep - version 2.2
+AppDep - version 2.2.1
 
 AppDep.exe est un outil de concaténation des dépendances à la fin d'un fichier.
 Il recherche la ligne de démarcation (spécifiée ou par défaut) dans le fichier
@@ -202,3 +202,5 @@ appel à GNU make.
   Ajout d'un fichier .gitignore.
   Améliorations supplémantaires du makefile.
   Ajout de la possibilité de spécifier où chercher les locales.
+1er mai 2016 - version 2.2.1
+  Réparation mineure du makefile.

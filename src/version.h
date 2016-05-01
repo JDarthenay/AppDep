@@ -44,7 +44,7 @@
  * \brief Revision version number.
  * \since 1.0
  */
-#define APPDEP_VER_REV 0
+#define APPDEP_VER_REV 1
 
 /**
  * \brief Build version number.
@@ -56,13 +56,13 @@
  * \brief Full version number as a string.
  * \since 2.0
  */
-#define APPDEP_VERSION_LONG "2.2.0.0"
+#define APPDEP_VERSION_LONG "2.2.1.0"
 
 /**
  * \brief Full version number as a comma-separated sequence.
  * \since 2.0
  */
-#define APPDEP_VERSION_NUMBER 2,2,0,0
+#define APPDEP_VERSION_NUMBER 2,2,1,0
 
 /**
  * \brief Application name.
